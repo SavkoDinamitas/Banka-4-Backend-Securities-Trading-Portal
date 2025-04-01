@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import rs.banka4.stock_service.domain.listing.dtos.ListingDto;
+import rs.banka4.stock_service.domain.listing.dtos.ListingFilterDto;
+import rs.banka4.stock_service.domain.listing.dtos.ListingInfoDto;
 
 public interface ListingApiDocumentation {
     @Operation(
@@ -35,8 +37,8 @@ public interface ListingApiDocumentation {
             )
         }
     )
-    ResponseEntity<Page<ListingDto>> getListings(
-        @Parameter(description = "Type of security to filter by") String securityType,
+    ResponseEntity<Page<ListingInfoDto>> getListings(
+        @Parameter(description = "Filters for listing") ListingFilterDto filter,
         @Parameter(description = "Page number") int page,
         @Parameter(description = "Number of listings per page") int size
     );

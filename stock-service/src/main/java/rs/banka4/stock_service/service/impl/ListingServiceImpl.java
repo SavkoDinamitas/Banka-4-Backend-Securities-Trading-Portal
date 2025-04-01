@@ -8,11 +8,14 @@ import java.util.UUID;
 import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import rs.banka4.stock_service.domain.listing.db.ListingDailyPriceInfo;
-import rs.banka4.stock_service.domain.listing.dtos.ListingDto;
+import rs.banka4.stock_service.domain.listing.dtos.ListingFilterDto;
+import rs.banka4.stock_service.domain.listing.dtos.ListingInfoDto;
+import rs.banka4.stock_service.domain.listing.mapper.ListingMapper;
+import rs.banka4.stock_service.domain.listing.specificaion.ListingSpecification;
 import rs.banka4.stock_service.repositories.ListingDailyPriceInfoRepository;
+import rs.banka4.stock_service.repositories.ListingRepository;
 import rs.banka4.stock_service.repositories.OrderRepository;
 import rs.banka4.stock_service.service.abstraction.ListingService;
 
@@ -20,6 +23,7 @@ import rs.banka4.stock_service.service.abstraction.ListingService;
 public class ListingServiceImpl implements ListingService {
     private OrderRepository orderRepository;
     private ListingDailyPriceInfoRepository listingDailyPriceInfoRepository;
+    private ListingRepository listingRepository;
 
     @Override
     public int getVolumeOfAsset(UUID securityId) {
@@ -46,10 +50,32 @@ public class ListingServiceImpl implements ListingService {
             .orElse(null);
     }
 
-    // TODO ovo da leti napolje sto pre
     @Override
-    public ResponseEntity<Page<ListingDto>> getListings(String securityType, Pageable pageable) {
-        return null;
+    public Page<ListingInfoDto> getListings(
+        ListingFilterDto filter,
+        Pageable pageable,
+        boolean isClient
+    ) {
+        var req =
+            listingRepository.findAll(
+                ListingSpecification.getSpecification(filter, isClient),
+                pageable
+            );
+        return req.map((listing) -> {
+            var vol =
+                getVolumeOfAsset(
+                    listing.getSecurity()
+                        .getId()
+                );
+            var change =
+                calculateChange(
+                    listing.getSecurity()
+                        .getId(),
+                    listing.getAsk()
+                );
+            return ListingMapper.INSTANCE.toInfoDto(listing, vol, change);
+        });
     }
+
 
 }
