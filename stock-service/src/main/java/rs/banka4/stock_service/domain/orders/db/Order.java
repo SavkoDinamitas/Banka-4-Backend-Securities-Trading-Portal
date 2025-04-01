@@ -81,7 +81,7 @@ public class Order {
     @Column(nullable = false)
     private UUID accountId;
 
-    /** did user who bought it, used it*/
+    /** did user who bought it, used it */
     @Column(nullable = false)
     private boolean used;
 }
