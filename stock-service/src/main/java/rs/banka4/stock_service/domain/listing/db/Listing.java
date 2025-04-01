@@ -22,10 +22,10 @@ public class Listing {
     @Builder.Default
     private UUID id = UUID.randomUUID();
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Security security;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Exchange exchange;
 
     @Column(nullable = false)

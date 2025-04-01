@@ -23,7 +23,7 @@ public class ListingDailyPriceInfo {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Security security;
 
     @ManyToOne(
