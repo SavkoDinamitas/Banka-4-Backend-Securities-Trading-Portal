@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import rs.banka4.stock_service.domain.actuaries.db.MonetaryAmount;
 import rs.banka4.stock_service.domain.options.db.Asset;
@@ -55,6 +56,10 @@ public class Order {
     @LastModifiedDate
     @Column(nullable = false)
     private OffsetDateTime lastModified;
+
+    @CreatedDate
+    @Column(nullable = false)
+    private OffsetDateTime createdAt;
 
     @Column(nullable = false)
     private int remainingPortions;
