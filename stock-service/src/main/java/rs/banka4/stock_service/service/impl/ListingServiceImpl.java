@@ -6,8 +6,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.domain.Limit;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import rs.banka4.stock_service.domain.listing.db.ListingDailyPriceInfo;
+import rs.banka4.stock_service.domain.listing.dtos.ListingDto;
 import rs.banka4.stock_service.repositories.ListingDailyPriceInfoRepository;
 import rs.banka4.stock_service.repositories.OrderRepository;
 import rs.banka4.stock_service.service.abstraction.ListingService;
@@ -40,6 +44,12 @@ public class ListingServiceImpl implements ListingService {
             listingDailyPriceInfo -> currentPrice.subtract(listingDailyPriceInfo.getLastPrice())
         )
             .orElse(null);
+    }
+
+    // TODO ovo da leti napolje sto pre
+    @Override
+    public ResponseEntity<Page<ListingDto>> getListings(String securityType, Pageable pageable) {
+        return null;
     }
 
 }
